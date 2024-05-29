@@ -15,7 +15,7 @@ func validState(fl validator.FieldLevel) bool {
 	return state == "PENDING" || state == "COMPLETED"
 }
 
-func CreateBasket(c echo.Context) error {
+func CreateCart(c echo.Context) error {
 	userID := GetUserIDFromContext(c)
 
 	cartInput := new(models.CartInput)
@@ -74,7 +74,7 @@ func UpdateCart(c echo.Context) error {
 func GetAllCarts(c echo.Context) error {
 	userID := GetUserIDFromContext(c)
 
-	var carts []models.Basket
+	var carts []models.Cart
 	result := database.DB.Where("user_id = ?", userID).Find(&carts)
 	if result.Error != nil {
 		return c.JSON(http.StatusInternalServerError, result.Error)
@@ -107,4 +107,6 @@ func DeleteCart(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, "Cart not found")
 	}
 
+	return c.JSON(http.StatusOK, map[string]string{"message": "Cart deleted"})
+}
 	
